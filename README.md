@@ -2,9 +2,12 @@
 
 An evolutionary multi-agent simulation exploring how moral behaviors emerge through cooperation. LLM-powered agents with different moral frameworks (universal, reciprocal, kin-focused, selfish) interact in a resource-gathering environment — hunting, sharing, fighting, and reproducing — to test hypotheses about why morality might be favored by natural selection.
 
-## Visualization
+## 🏛️ Ecosystem & Project Page
 
-Live visualization: [Morality AI Web](https://morality-ai-web.vercel.app/)
+This simulation engine is the core framework for the ACL 2026 paper: *"Investigating Moral Evolution via LLM-based Agent Simulation"*, hosted under the **[MoralAgentSim](https://github.com/MoralAgentSim)** organization.
+
+- **Project Website**: [https://MoralAgentSim.github.io](https://MoralAgentSim.github.io) (Provides high-resolution graphs, macro-statistics, and case studies).
+- **Visualization Dashboard**: [Morality AI Web](https://morality-ai-web.vercel.app/) (For real-time simulation tracking).
 
 ## Setup
 
@@ -146,9 +149,13 @@ Agents are assigned one of 5 moral frameworks that shape their LLM prompts:
 - **Reproductive selfish** — self-interested, reproduces aggressively
 - **Reproduction-averse selfish** — self-interested, avoids reproduction costs
 
-### Configuration
+### Experimental Configurations
 
-Each config directory under `config/` contains a `settings.json` (world params, agent ratios, resource settings, LLM config) and prompt templates. See existing configs for examples.
+Each config directory under `config/` contains a `settings.json` (world params, agent ratios, LLM models) and prompt templates. Core experimental settings include:
+- **1. Baseline**: Abundant resources and free communication. Predictably dominated by Kin-focused agents who exploit peaceful networks.
+- **2. Resource Scarcity (Ecological Carrying Capacity)**: Severe ecological caps on food. Non-cooperative agents starve rapidly, naturally selecting for Reciprocal agents capable of forming broad trust networks.
+- **3. Social Interaction Cost (Friction)**: Assigns an explicit health tax to communication. Punishes agents that require dialogue (like Reciprocal), creating a niche where solitary Selfish agents thrive.
+- **4. Moral Type Observability (Reputation)**: Agents perfectly perceive the moral dispositions of peers. Enables hyper-efficient selective altruism, isolating Selfish agents instantly.
 
 ## Testing
 
