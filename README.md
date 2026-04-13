@@ -149,13 +149,31 @@ Agents are assigned one of 5 moral frameworks that shape their LLM prompts:
 - **Reproductive selfish** — self-interested, reproduces aggressively
 - **Reproduction-averse selfish** — self-interested, avoids reproduction costs
 
-### Experimental Configurations
+### 🧬 Experimental Design & Core Configurations
 
-Each config directory under `config/` contains a `settings.json` (world params, agent ratios, LLM models) and prompt templates. Core experimental settings include:
-- **1. Baseline**: Abundant resources and free communication. Predictably dominated by Kin-focused agents who exploit peaceful networks.
-- **2. Resource Scarcity (Ecological Carrying Capacity)**: Severe ecological caps on food. Non-cooperative agents starve rapidly, naturally selecting for Reciprocal agents capable of forming broad trust networks.
-- **3. Social Interaction Cost (Friction)**: Assigns an explicit health tax to communication. Punishes agents that require dialogue (like Reciprocal), creating a niche where solitary Selfish agents thrive.
-- **4. Moral Type Observability (Reputation)**: Agents perfectly perceive the moral dispositions of peers. Enables hyper-efficient selective altruism, isolating Selfish agents instantly.
+The evolutionary trajectory of the simulation is governed by physical environment limits and cognitive (LLM) framing parameters. All core experiments are configured to run across **80 scaled time steps** with a statistically rigorous **N=4 simulation replication** per condition.
+
+Each config directory under `config/` contains an isolated `settings.json` (world physics parameters, LLM model tuning, agent ratios) alongside injected moral framework prompt templates. We expose four fundamental experimental environments to observe the emergence (or extinction) of specific moral behaviors under selective pressures:
+
+#### 1. Baseline Configuration (`configZ_major_v*`)
+- **Mechanics**: High resource spawn rate (`carrying_capacity: abundant`) and frictionless (`0 HP cost`) agent-to-agent communication.
+- **Evolutionary Pressure**: Low pressure environments act as a control. Without life-threatening constraints, purely survival-oriented selection pressure drops.
+- **Observed Emergence**: **Kin-focused** agents dominate this epoch. They safely exploit the peaceful environment to rapidly expand familial lineages without requiring complex, risky trust negotiations outside their in-group.
+
+#### 2. Resource Scarcity (`configA_z8_easyHunting_visible`)
+- **Mechanics**: Ecological carrying capacity is artificially suppressed. The environment's prey/food regeneration rates are halved, and baseline vitality drainage per step is increased.
+- **Evolutionary Pressure**: High environmental attrition. Agents can no longer survive independently; cooperation and resource sharing become mandatory for long-term health.
+- **Observed Emergence**: Naturally selects for **Reciprocal** agents. Capable of evaluating external agents and negotiating resource sharing, Reciprocal trust clusters scale horizontally to bypass localized familial starvation limits. 
+
+#### 3. Social Interaction Cost & Friction (`config03_*`)
+- **Mechanics**: Imposes a stiff metabolic penalty for dialogue. The `Communicate` action now costs an explicit `1 HP` and `10 tokens` per invocation. 
+- **Evolutionary Pressure**: Taxing dialogue structurally penalizes highly social and cooperative types (Universal/Reciprocal) who rely heavily on communication protocols to forge alliances.
+- **Observed Emergence**: Driven by the metabolic drain of socialization, isolated **Selfish** agents thrive. By circumventing the communication tax entirely and hoarding individual resources, they out-live the over-extending cooperative agents.
+
+#### 4. Moral Type Observability (`config04_*`)
+- **Mechanics**: Removes LLM cognitive blindness regarding peer alignment. Observation prompts are injected with explicit tags revealing the internal moral alignment of targeting peers.
+- **Evolutionary Pressure**: Simulates a perfect "reputation system." Free-rider and defection problems are mathematically nullified because risk is perfectly calculable before interaction.
+- **Observed Emergence**: Highly-efficient **Selective Altruism**. Universal and Reciprocal agents immediately isolate Selfish defector types, starving them of shared resources which results in the rapid, enforced extinction of selfish behaviors.
 
 ## Testing
 
