@@ -7,7 +7,6 @@ An evolutionary multi-agent simulation exploring how moral behaviors emerge thro
 This simulation engine is the core framework for the ACL 2026 paper: *"Investigating Moral Evolution via LLM-based Agent Simulation"*, hosted under the **[MoralAgentSim](https://github.com/MoralAgentSim)** organization.
 
 - **Project Website**: [https://MoralAgentSim.github.io](https://MoralAgentSim.github.io) (Provides high-resolution graphs, macro-statistics, and case studies).
-- **Visualization Dashboard**: [Morality AI Web](https://morality-ai-web.vercel.app/) (For real-time simulation tracking).
 
 ## Setup
 
@@ -20,15 +19,16 @@ This simulation engine is the core framework for the ACL 2026 paper: *"Investiga
 ### Installation
 
 ```bash
-git clone https://github.com/TINKPA/Social-Simulation-with-Moral-Agents.git
-cd Social-Simulation-with-Moral-Agents
+git clone https://github.com/MoralAgentSim/social-evol-sim.git
+cd social-evol-sim
 
 # Install dependencies
 uv sync
 
-# Set up environment variables (API keys for LLM providers)
+# Set up environment variables
 cp .env.example .env
-# Edit .env and fill in your API keys
+# Edit .env and set OPENROUTER_API_KEY (recommended — gives access to all
+# OpenRouter-supported models through a single provider)
 ```
 
 ### Database (optional)
@@ -60,14 +60,17 @@ uv run python main.py list-runs
 # Estimate token usage and cost
 uv run python main.py estimate-cost --config_dir configZ_major_v2
 
-# Use Claude Code CLI as the LLM provider (requires `claude` installed)
-uv run python main.py run --config_dir configZ_major_v2 --config.llm.provider claude --config.llm.chat_model claude-sonnet-4-20250514
+# Use OpenRouter as the LLM provider (any OpenRouter-supported model works)
+uv run python main.py run \
+  --config_dir configZ_major_v2 \
+  --config.llm.provider openrouter \
+  --config.llm.chat_model anthropic/claude-sonnet-4
 
 # Combine with other flags
 uv run python main.py run \
   --config_dir configZ_major_v4 \
-  --config.llm.provider claude \
-  --config.llm.chat_model haiku \
+  --config.llm.provider openrouter \
+  --config.llm.chat_model openai/gpt-4o-mini \
   --config.llm.async_config.max_concurrent_calls 2 \
   --config.world.max_life_steps 1 \
   --dashboard
@@ -75,8 +78,8 @@ uv run python main.py run \
 # Run 4 kin-focused agents only (override agent count and ratios)
 uv run python main.py run \
   --config_dir configZ_major_v4 \
-  --config.llm.provider claude \
-  --config.llm.chat_model haiku \
+  --config.llm.provider openrouter \
+  --config.llm.chat_model google/gemini-2.5-flash \
   --config.llm.async_config.max_concurrent_calls 20 \
   --config.agent.initial_count 4 \
   --config.agent.ratio.kin_focused_moral 1.0 \
@@ -87,15 +90,11 @@ uv run python main.py run \
   --dashboard
 ```
 
-#### Available Claude models
+#### Model selection
 
-| Alias | Full Model ID |
-|-------|---------------|
-| `sonnet` | `claude-sonnet-4-6` |
-| `opus` | `claude-opus-4-6` |
-| `haiku` | `claude-haiku-4-5-20251001` |
+This project follows the **OpenRouter** model-naming convention (`<vendor>/<model-id>`), giving access to the full catalogue of providers — Anthropic, OpenAI, Google, DeepSeek, Mistral, Meta, and more — through a single API key. See the full list at [openrouter.ai/models](https://openrouter.ai/models).
 
-Aliases resolve to the latest version automatically. Older versions (e.g. `claude-sonnet-4-20250514`) also work.
+Examples: `anthropic/claude-sonnet-4`, `openai/gpt-4o-mini`, `google/gemini-2.5-flash`, `deepseek/deepseek-chat-v3-0324`.
 
 ### CLI Subcommands
 
@@ -123,8 +122,8 @@ Aliases resolve to the latest version automatically. Older versions (e.g. `claud
 |----------|-------------|
 | `--config.world.max_life_steps N` | Max simulation steps |
 | `--config.world.communication_and_sharing_steps N` | Communication frequency |
-| `--config.llm.provider` | LLM provider: `openai`, `deepseek`, `tongyuan`, `alibaba`, `openrouter`, `claude` |
-| `--config.llm.chat_model` | LLM model (e.g., `gpt-4o-mini`, `claude-sonnet-4-20250514`) |
+| `--config.llm.provider` | LLM provider (recommended: `openrouter`; also supports `openai`, `deepseek`, `alibaba`) |
+| `--config.llm.chat_model` | Model id in OpenRouter format (e.g., `anthropic/claude-sonnet-4`, `openai/gpt-4o-mini`) |
 | `--config.llm.async_config.max_concurrent_calls N` | Max concurrent LLM calls (default: 10) |
 | `--config.agent.initial_count N` | Number of starting agents |
 
